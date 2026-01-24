@@ -84,61 +84,45 @@ static PWR_Context_t PWR_Context;
 
 static PWR_Status_t PWR_Context_Initialize( void )
 {
-    PWR_Status_t Status = PWR_Status_Error;
+    PWR_Status_t Status = PWR_Status_Success;
+
     do
     {
         PWR_Trace( "%s( void )", __FUNCTION__ );
-        for ( PWR_t PWR = PWR_Null; PWR < PWR_Count; ++PWR )
+
+        for ( PWR_t PWR_x = PWR_Null; PWR_x < PWR_Count; ++PWR_x )
         {
-            PWR_Context.Instance[ PWR ].PWR = PWR;
-            if ( ( Status = PWR_Instance_Initialize( &PWR_Context.Instance[ PWR ] ) ) != PWR_Status_Success )
-            {
-                PWR_Warning( "PWR_%d Initialize Failed: Status %d", PWR, Status );
-            }
+            PWR_Context.Instance[ PWR_x ].PWRx = PWR_x;
         }
-        Status = PWR_Status_Success;
     }
     while ( 0 );
+
     return Status;
 }
 
 static PWR_Status_t PWR_Context_Cycle( void )
 {
-    PWR_Status_t Status = PWR_Status_Error;
+    PWR_Status_t Status = PWR_Status_Success;
+
     do
     {
         PWR_Trace( "%s( void )", __FUNCTION__ );
-        for ( PWR_t PWR = PWR_Null; PWR < PWR_Count; ++PWR )
-        {
-            PWR_Context.Instance[ PWR ].PWR = PWR; // FIXME
-            if ( ( Status = PWR_Instance_Cycle( &PWR_Context.Instance[ PWR ] ) ) != PWR_Status_Success )
-            {
-                PWR_Warning( "PWR_%d Cycle Failed: Status %d", PWR, Status );
-            }
-        }
-        Status = PWR_Status_Success;
     }
     while ( 0 );
+
     return Status;
 }
 
 static PWR_Status_t PWR_Context_DeInitialize( void )
 {
-    PWR_Status_t Status = PWR_Status_Error;
+    PWR_Status_t Status = PWR_Status_Success;
+
     do
     {
         PWR_Trace( "%s( void )", __FUNCTION__ );
-        for ( PWR_t PWR = PWR_Null; PWR < PWR_Count; ++PWR )
-        {
-            PWR_Context.Instance[ PWR ].PWR = PWR; // FIXME
-            if ( ( Status = PWR_Instance_DeInitialize( &PWR_Context.Instance[ PWR ] ) ) != PWR_Status_Success )
-            {
-                PWR_Warning( "PWR_%d DeInitialize Failed: Status %d", PWR, Status );
-            }
-        }
-        Status = PWR_Status_Success;
     }
     while ( 0 );
+
     return Status;
 }
 
@@ -146,39 +130,111 @@ static PWR_Status_t PWR_Context_DeInitialize( void )
 // #### Public Method(s) #######################################################
 // #############################################################################
 
-PWR_Status_t PWR_Initialize( void )
+PWR_Status_t PWR_Initialize( PWR_t PWRx )
 {
     PWR_Status_t Status = PWR_Status_Error;
+
     do
     {
-        PWR_Trace( "%s( void )", __FUNCTION__ );
-        Status = PWR_Context_Initialize( );
+        PWR_Trace( "%s( PWRx=%d )", __FUNCTION__, PWRx );
+
+        if ( ( Status = PWR_IsValid( PWRx ) ) != PWR_Status_Success )
+        {
+            break;
+        }
+
+        if ( ( Status = PWR_Context_Initialize( ) ) != PWR_Status_Success )
+        {
+            break;
+        }
+
+        for ( PWR_t PWR_x = PWR_Null; PWR_x < PWR_Count; ++PWR_x )
+        {
+            if ( PWRx != PWR_All && PWRx != PWR_x )
+            {
+                continue;
+            }
+
+            PWR_Status_t PWR_Status = PWR_Status_Success;
+            if ( ( PWR_Status = PWR_Instance_Initialize( &PWR_Context.Instance[ PWR_x ] ) ) != PWR_Status_Success )
+            {
+                Status = PWR_Status;
+            }
+        }
     }
     while ( 0 );
+
     return Status;
 }
 
-PWR_Status_t PWR_Cycle( void )
+PWR_Status_t PWR_Cycle( PWR_t PWRx )
 {
     PWR_Status_t Status = PWR_Status_Error;
+
     do
     {
-        PWR_Trace( "%s( void )", __FUNCTION__ );
-        Status = PWR_Context_Cycle( );
+        PWR_Trace( "%s( PWRx=%d )", __FUNCTION__, PWRx );
+
+        if ( ( Status = PWR_IsValid( PWRx ) ) != PWR_Status_Success )
+        {
+            break;
+        }
+
+        if ( ( Status = PWR_Context_Cycle( ) ) != PWR_Status_Success )
+        {
+            break;
+        }
+
+        for ( PWR_t PWR_x = PWR_Null; PWR_x < PWR_Count; ++PWR_x )
+        {
+            if ( PWRx != PWR_All && PWRx != PWR_x )
+            {
+                continue;
+            }
+
+            PWR_Status_t PWR_Status = PWR_Status_Success;
+            if ( ( PWR_Status = PWR_Instance_Cycle( &PWR_Context.Instance[ PWR_x ] ) ) != PWR_Status_Success )
+            {
+                Status = PWR_Status;
+            }
+        }
     }
     while ( 0 );
+
     return Status;
 }
 
-PWR_Status_t PWR_DeInitialize( void )
+PWR_Status_t PWR_DeInitialize( PWR_t PWRx )
 {
     PWR_Status_t Status = PWR_Status_Error;
+
     do
     {
-        PWR_Trace( "%s( void )", __FUNCTION__ );
+        PWR_Trace( "%s( PWRx=%d )", __FUNCTION__, PWRx );
+
+        if ( ( Status = PWR_IsValid( PWRx ) ) != PWR_Status_Success )
+        {
+            break;
+        }
+
+        for ( PWR_t PWR_x = PWR_Null; PWR_x < PWR_Count; ++PWR_x )
+        {
+            if ( PWRx != PWR_All && PWRx != PWR_x )
+            {
+                continue;
+            }
+
+            PWR_Status_t PWR_Status = PWR_Status_Success;
+            if ( ( PWR_Status = PWR_Instance_DeInitialize( &PWR_Context.Instance[ PWR_x ] ) ) != PWR_Status_Success )
+            {
+                Status = PWR_Status;
+            }
+        }
+
         Status = PWR_Context_DeInitialize( );
     }
     while ( 0 );
+
     return Status;
 }
 
@@ -186,7 +242,7 @@ PWR_Status_t PWR_DeInitialize( void )
 // #### Public Variable(s) #####################################################
 // #############################################################################
 
-const char PWR_VERSION[] = "0.0.0.v20260117-1036";
+const char PWR_VERSION[] = "0.0.0.v20260125-0138";
 
 // #############################################################################
 // #### File Guard #############################################################

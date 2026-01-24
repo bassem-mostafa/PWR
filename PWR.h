@@ -22,6 +22,12 @@
 // #### Description ############################################################
 // #############################################################################
 
+/**
+ *  @file
+ *
+ *  @brief Platform PWR Module
+ */
+
 // #############################################################################
 // #### Control Include(s) #####################################################
 // #############################################################################
@@ -33,6 +39,27 @@
 // #############################################################################
 // #### File Guard #############################################################
 // #############################################################################
+
+/**
+ *  @addtogroup Platform_Module
+ *
+ *  @{
+ */
+
+/**
+ *  @defgroup Platform_PWR PWR
+ *
+ *  @note Default port is STUB if Unspecified
+ *
+ *  @{
+ */
+
+/**
+ *  @defgroup Platform_PWR_Driver Driver
+ *
+ *  @{
+ *  @}
+ */
 
 #ifndef PWR_H_
     #define PWR_H_
@@ -56,14 +83,19 @@ extern "C"
     // #### Public Type(s) #########################################################
     // #############################################################################
 
+    /**
+     *  @brief PWR Operation Status
+     *
+     *  @enum PWR_Status_t
+     */
     typedef enum PWR_Status
     {
-        PWR_Status_Success = 0,
-        PWR_Status_ArgumentInvalid,
-        PWR_Status_NotSupported,
-        PWR_Status_Error,
-        PWR_Status_Busy,
-        PWR_Status_Timeout,
+        PWR_Status_Success = 0,     ///< Success
+        PWR_Status_ArgumentInvalid, ///< Argument Invalid
+        PWR_Status_NotSupported,    ///< Not Supported
+        PWR_Status_Error,           ///< General Error
+        PWR_Status_Busy,            ///< Busy
+        PWR_Status_Timeout,         ///< Timeout
     } PWR_Status_t;
 
     // TODO Add callback types for notification/reporting of power activities such as negotiate, enter, and exit
@@ -72,14 +104,42 @@ extern "C"
     // #### Public Method(s) #######################################################
     // #############################################################################
 
-    PWR_Status_t PWR_Initialize( void );
-    PWR_Status_t PWR_Cycle( void );
-    PWR_Status_t PWR_DeInitialize( void );
+    /**
+     *  @brief Initialize power instance
+     *
+     *  @note MUST BE called before using any PWR API
+     *
+     *  @param[in] PWRx Instance
+     *
+     *  @return PWR_Status_t
+     */
+    PWR_Status_t PWR_Initialize( PWR_t PWRx );
+
+    /**
+     *  @brief Cycle power instance
+     *
+     *  @param[in] PWRx Instance
+     *
+     *  @return PWR_Status_t
+     */
+    PWR_Status_t PWR_Cycle( PWR_t PWRx );
+
+    /**
+     *  @brief DeInitialize power instance
+     *
+     *  @param[in] PWRx Instance
+     *
+     *  @return PWR_Status_t
+     */
+    PWR_Status_t PWR_DeInitialize( PWR_t PWRx );
 
     // #############################################################################
     // #### Public Variable(s) #####################################################
     // #############################################################################
 
+    /**
+     *  @brief Version
+     */
     extern const char PWR_VERSION[];
 
     // #############################################################################
@@ -91,6 +151,12 @@ extern "C"
     #endif /* __cplusplus */
 
 #endif /* PWR_H_ */
+
+/**
+ *  @}
+ *
+ *  @}
+ */
 
 // #############################################################################
 // #### END OF FILE ############################################################
