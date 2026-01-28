@@ -7,3 +7,6 @@
 [submodule "port/Flow_Meter"]
 	path = port/Flow_Meter
 	url = https://github.com/bassem-mostafa/PWR_Flow_Meter.git
+[submodule "driver/TPS5528"]
+	path = driver/TPS5528
+	url = https://github.com/bassem-mostafa/TPS5528.git
