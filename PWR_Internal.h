@@ -88,7 +88,7 @@ extern "C"
     // #### Public Type(s) #########################################################
     // #############################################################################
 
-    typedef struct PWR_Instance_Context_t PWR_Instance_Context_t;
+    typedef struct PWR_InstanceContext_t PWR_InstanceContext_t;
 
     typedef struct PWR_Instance
     {
@@ -96,7 +96,7 @@ extern "C"
 
         union
         {
-            PWR_Instance_Context_t * Context;
+            PWR_InstanceContext_t * Context;
             PWR_STM32L496VGT6P_Instance_t * STM32L496VGT6P;
         };
     } PWR_Instance_t;
