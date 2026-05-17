@@ -61,7 +61,6 @@
 
 typedef struct PWR_Context
 {
-    PWR_Instance_t Instance[ PWR_Count ];
 } PWR_Context_t;
 
 // #############################################################################
@@ -89,11 +88,6 @@ static PWR_Status_t PWR_Context_Initialize( void )
     do
     {
         PWR_Trace( "%s( void )", __FUNCTION__ );
-
-        for ( PWR_t PWR_x = PWR_Null; PWR_x < PWR_Count; ++PWR_x )
-        {
-            PWR_Context.Instance[ PWR_x ].PWRx = PWR_x;
-        }
     }
     while ( 0 );
 
@@ -156,7 +150,7 @@ PWR_Status_t PWR_Initialize( PWR_t PWRx )
             }
 
             PWR_Status_t PWR_Status = PWR_Status_Success;
-            if ( ( PWR_Status = PWR_Instance_Initialize( &PWR_Context.Instance[ PWR_x ] ) ) != PWR_Status_Success )
+            if ( ( PWR_Status = PWR_Instance_Initialize( PWR_x ) ) != PWR_Status_Success )
             {
                 Status = PWR_Status;
             }
@@ -193,7 +187,7 @@ PWR_Status_t PWR_Cycle( PWR_t PWRx )
             }
 
             PWR_Status_t PWR_Status = PWR_Status_Success;
-            if ( ( PWR_Status = PWR_Instance_Cycle( &PWR_Context.Instance[ PWR_x ] ) ) != PWR_Status_Success )
+            if ( ( PWR_Status = PWR_Instance_Cycle( PWR_x ) ) != PWR_Status_Success )
             {
                 Status = PWR_Status;
             }
@@ -225,7 +219,7 @@ PWR_Status_t PWR_DeInitialize( PWR_t PWRx )
             }
 
             PWR_Status_t PWR_Status = PWR_Status_Success;
-            if ( ( PWR_Status = PWR_Instance_DeInitialize( &PWR_Context.Instance[ PWR_x ] ) ) != PWR_Status_Success )
+            if ( ( PWR_Status = PWR_Instance_DeInitialize( PWR_x ) ) != PWR_Status_Success )
             {
                 Status = PWR_Status;
             }
@@ -242,7 +236,7 @@ PWR_Status_t PWR_DeInitialize( PWR_t PWRx )
 // #### Public Variable(s) #####################################################
 // #############################################################################
 
-const char PWR_VERSION[] = "0.0.0.v20260412-1852";
+const char PWR_VERSION[] = "0.0.0.v20260518-0122";
 
 // #############################################################################
 // #### File Guard #############################################################

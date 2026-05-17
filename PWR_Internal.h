@@ -88,16 +88,19 @@ extern "C"
     // #### Public Type(s) #########################################################
     // #############################################################################
 
-    typedef struct PWR_InstanceContext_t PWR_InstanceContext_t;
+    typedef enum PWR_Type
+    {
+        PWR_Type_Unknown = 0,
+        PWR_Type_STM32L496VGT6P,
+    } PWR_Type_t;
 
     typedef struct PWR_Instance
     {
-        PWR_t PWRx;
+        PWR_Type_t Type;
 
         union
         {
-            PWR_InstanceContext_t * Context;
-            PWR_STM32L496VGT6P_Instance_t * STM32L496VGT6P;
+            PWR_STM32L496VGT6P_t STM32L496VGT6Px;
         };
     } PWR_Instance_t;
 
@@ -108,9 +111,9 @@ extern "C"
     // The following APIs MUST be provided by the port
     PWR_Status_t PWR_IsValid( PWR_t PWRx );
 
-    PWR_Status_t PWR_Instance_Initialize( PWR_Instance_t * Instance );
-    PWR_Status_t PWR_Instance_Cycle( PWR_Instance_t * Instance );
-    PWR_Status_t PWR_Instance_DeInitialize( PWR_Instance_t * Instance );
+    PWR_Status_t PWR_Instance_Initialize( PWR_t PWRx );
+    PWR_Status_t PWR_Instance_Cycle( PWR_t PWRx );
+    PWR_Status_t PWR_Instance_DeInitialize( PWR_t PWRx );
 
     // TODO Add More APIs
 
