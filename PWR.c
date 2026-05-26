@@ -144,13 +144,10 @@ PWR_Status_t PWR_Initialize( PWR_t PWRx )
             break;
         }
 
-        for ( PWR_t PWR_x = PWR_Null; PWR_x < PWR_Count; ++PWR_x )
+        PWR_t PWR_start = ( PWRx == PWR_All ? PWR_Null : PWRx );
+        PWR_t PWR_end = ( PWRx == PWR_All ? PWR_Count : PWRx + 1 );
+        for ( PWR_t PWR_x = PWR_start; PWR_x < PWR_end; ++PWR_x )
         {
-            if ( PWRx != PWR_All && PWRx != PWR_x )
-            {
-                continue;
-            }
-
             if ( ( PWR_Status = PWR_Port_Initialize( PWR_x ) ) != PWR_Status_Success )
             {
                 Status = PWR_Status;
@@ -176,13 +173,10 @@ PWR_Status_t PWR_Cycle( PWR_t PWRx )
             break;
         }
 
-        for ( PWR_t PWR_x = PWR_Null; PWR_x < PWR_Count; ++PWR_x )
+        PWR_t PWR_start = ( PWRx == PWR_All ? PWR_Null : PWRx );
+        PWR_t PWR_end = ( PWRx == PWR_All ? PWR_Count : PWRx + 1 );
+        for ( PWR_t PWR_x = PWR_start; PWR_x < PWR_end; ++PWR_x )
         {
-            if ( PWRx != PWR_All && PWRx != PWR_x )
-            {
-                continue;
-            }
-
             if ( ( PWR_Status = PWR_Port_Cycle( PWR_x ) ) != PWR_Status_Success )
             {
                 Status = PWR_Status;
@@ -203,20 +197,20 @@ PWR_Status_t PWR_DeInitialize( PWR_t PWRx )
     {
         PWR_Trace( "%s( PWRx=%d )", __FUNCTION__, PWRx );
 
-        for ( PWR_t PWR_x = PWR_Null; PWR_x < PWR_Count; ++PWR_x )
+        PWR_t PWR_start = ( PWRx == PWR_All ? PWR_Null : PWRx );
+        PWR_t PWR_end = ( PWRx == PWR_All ? PWR_Count : PWRx + 1 );
+        for ( PWR_t PWR_x = PWR_start; PWR_x < PWR_end; ++PWR_x )
         {
-            if ( PWRx != PWR_All && PWRx != PWR_x )
-            {
-                continue;
-            }
-
             if ( ( PWR_Status = PWR_Port_DeInitialize( PWR_x ) ) != PWR_Status_Success )
             {
                 Status = PWR_Status;
             }
         }
 
-        Status = PWR_Context_DeInitialize( );
+        if ( ( Status = PWR_Context_DeInitialize( ) ) != PWR_Status_Success )
+        {
+            break;
+        }
     }
     while ( 0 );
 
@@ -232,13 +226,10 @@ PWR_Status_t PWR_SetOnEnter( PWR_t PWRx, PWR_OnEnter_t OnEnter )
     {
         PWR_Trace( "%s( PWRx=%d, Callback=%p, Context=%p )", __FUNCTION__, PWRx, OnEnter.Callback, OnEnter.Context );
 
-        for ( PWR_t PWR_x = PWR_Null; PWR_x < PWR_Count; ++PWR_x )
+        PWR_t PWR_start = ( PWRx == PWR_All ? PWR_Null : PWRx );
+        PWR_t PWR_end = ( PWRx == PWR_All ? PWR_Count : PWRx + 1 );
+        for ( PWR_t PWR_x = PWR_start; PWR_x < PWR_end; ++PWR_x )
         {
-            if ( PWRx != PWR_All && PWRx != PWR_x )
-            {
-                continue;
-            }
-
             if ( ( PWR_Status = PWR_Port_SetOnEnter( PWR_x, &OnEnter ) ) != PWR_Status_Success )
             {
                 Status = PWR_Status;
@@ -259,13 +250,10 @@ PWR_Status_t PWR_SetOnExit( PWR_t PWRx, PWR_OnExit_t OnExit )
     {
         PWR_Trace( "%s( PWRx=%d, Callback=%p, Context=%p )", __FUNCTION__, PWRx, OnExit.Callback, OnExit.Context );
 
-        for ( PWR_t PWR_x = PWR_Null; PWR_x < PWR_Count; ++PWR_x )
+        PWR_t PWR_start = ( PWRx == PWR_All ? PWR_Null : PWRx );
+        PWR_t PWR_end = ( PWRx == PWR_All ? PWR_Count : PWRx + 1 );
+        for ( PWR_t PWR_x = PWR_start; PWR_x < PWR_end; ++PWR_x )
         {
-            if ( PWRx != PWR_All && PWRx != PWR_x )
-            {
-                continue;
-            }
-
             if ( ( PWR_Status = PWR_Port_SetOnExit( PWR_x, &OnExit ) ) != PWR_Status_Success )
             {
                 Status = PWR_Status;
@@ -281,7 +269,7 @@ PWR_Status_t PWR_SetOnExit( PWR_t PWRx, PWR_OnExit_t OnExit )
 // #### Public Variable(s) #####################################################
 // #############################################################################
 
-const char PWR_VERSION[] = "0.0.0.v20260526-1736";
+const char PWR_VERSION[] = "0.0.0.v20260526-1834";
 
 // #############################################################################
 // #### File Guard #############################################################
