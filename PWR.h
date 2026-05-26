@@ -98,7 +98,37 @@ extern "C"
         PWR_Status_Timeout,         ///< Timeout
     } PWR_Status_t;
 
-    // TODO Add callback types for notification/reporting of power activities such as negotiate, enter, and exit
+    /**
+     *  @brief PWR Callback Context
+     */
+    typedef void PWR_CallbackContext_t;
+
+    /**
+     *  @brief PWR Callback
+     */
+    typedef PWR_Status_t( PWR_Callback_t )( PWR_t PWRx, PWR_CallbackContext_t * Context );
+
+    /**
+     *  @brief PWR On Enter Configuration
+     *
+     *  @struct PWR_OnEnter_t
+     */
+    typedef struct PWR_OnEnter
+    {
+        PWR_Callback_t * Callback;
+        PWR_CallbackContext_t * Context;
+    } PWR_OnEnter_t;
+
+    /**
+     *  @brief PWR On Exit Configuration
+     *
+     *  @struct PWR_OnExit_t
+     */
+    typedef struct PWR_OnExit
+    {
+        PWR_Callback_t * Callback;
+        PWR_CallbackContext_t * Context;
+    } PWR_OnExit_t;
 
     // #############################################################################
     // #### Public Method(s) #######################################################
@@ -132,6 +162,26 @@ extern "C"
      *  @return PWR_Status_t
      */
     PWR_Status_t PWR_DeInitialize( PWR_t PWRx );
+
+    /**
+     *  @brief Set on-enter of power instance
+     *
+     *  @param[in] PWRx    Instance
+     *  @param[in] OnEnter On-Enter configuration
+     *
+     *  @return PWR_Status_t
+     */
+    PWR_Status_t PWR_SetOnEnter( PWR_t PWRx, PWR_OnEnter_t OnEnter );
+
+    /**
+     *  @brief Set on-exit of power instance
+     *
+     *  @param[in] PWRx   Instance
+     *  @param[in] OnExit On-Exit configuration
+     *
+     *  @return PWR_Status_t
+     */
+    PWR_Status_t PWR_SetOnExit( PWR_t PWRx, PWR_OnExit_t OnExit );
 
     // #############################################################################
     // #### Public Variable(s) #####################################################

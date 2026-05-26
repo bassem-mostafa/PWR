@@ -48,7 +48,7 @@ extern "C"
     // #### Include(s) #############################################################
     // #############################################################################
 
-    #include "PWR_Port.h"
+    #include "PWR.h"
     #include "driver/STM32L496VGT6P/PWR_STM32L496VGT6P.h"
 
     // #############################################################################
@@ -91,6 +91,7 @@ extern "C"
     typedef enum PWR_Type
     {
         PWR_Type_Unknown = 0,
+        PWR_Type_Null,
         PWR_Type_STM32L496VGT6P,
     } PWR_Type_t;
 
@@ -102,6 +103,9 @@ extern "C"
         {
             PWR_STM32L496VGT6P_t STM32L496VGT6Px;
         };
+
+        PWR_OnEnter_t OnEnter;
+        PWR_OnExit_t OnExit;
     } PWR_Instance_t;
 
     // #############################################################################
@@ -109,11 +113,12 @@ extern "C"
     // #############################################################################
 
     // The following APIs MUST be provided by the port
-    PWR_Status_t PWR_IsValid( PWR_t PWRx );
+    PWR_Status_t PWR_Port_Initialize( PWR_t PWRx );
+    PWR_Status_t PWR_Port_Cycle( PWR_t PWRx );
+    PWR_Status_t PWR_Port_DeInitialize( PWR_t PWRx );
 
-    PWR_Status_t PWR_Instance_Initialize( PWR_t PWRx );
-    PWR_Status_t PWR_Instance_Cycle( PWR_t PWRx );
-    PWR_Status_t PWR_Instance_DeInitialize( PWR_t PWRx );
+    PWR_Status_t PWR_Port_SetOnEnter( PWR_t PWRx, PWR_OnEnter_t * OnEnter );
+    PWR_Status_t PWR_Port_SetOnExit( PWR_t PWRx, PWR_OnExit_t * OnExit );
 
     // TODO Add More APIs
 

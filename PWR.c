@@ -88,6 +88,8 @@ static PWR_Status_t PWR_Context_Initialize( void )
     do
     {
         PWR_Trace( "%s( void )", __FUNCTION__ );
+
+        UTIL_UNUSED( PWR_Context );
     }
     while ( 0 );
 
@@ -101,6 +103,8 @@ static PWR_Status_t PWR_Context_Cycle( void )
     do
     {
         PWR_Trace( "%s( void )", __FUNCTION__ );
+
+        UTIL_UNUSED( PWR_Context );
     }
     while ( 0 );
 
@@ -114,6 +118,8 @@ static PWR_Status_t PWR_Context_DeInitialize( void )
     do
     {
         PWR_Trace( "%s( void )", __FUNCTION__ );
+
+        UTIL_UNUSED( PWR_Context );
     }
     while ( 0 );
 
@@ -126,16 +132,12 @@ static PWR_Status_t PWR_Context_DeInitialize( void )
 
 PWR_Status_t PWR_Initialize( PWR_t PWRx )
 {
-    PWR_Status_t Status = PWR_Status_Error;
+    PWR_Status_t Status = PWR_Status_Success;
+    PWR_Status_t PWR_Status = PWR_Status_Success;
 
     do
     {
         PWR_Trace( "%s( PWRx=%d )", __FUNCTION__, PWRx );
-
-        if ( ( Status = PWR_IsValid( PWRx ) ) != PWR_Status_Success )
-        {
-            break;
-        }
 
         if ( ( Status = PWR_Context_Initialize( ) ) != PWR_Status_Success )
         {
@@ -149,8 +151,7 @@ PWR_Status_t PWR_Initialize( PWR_t PWRx )
                 continue;
             }
 
-            PWR_Status_t PWR_Status = PWR_Status_Success;
-            if ( ( PWR_Status = PWR_Instance_Initialize( PWR_x ) ) != PWR_Status_Success )
+            if ( ( PWR_Status = PWR_Port_Initialize( PWR_x ) ) != PWR_Status_Success )
             {
                 Status = PWR_Status;
             }
@@ -163,16 +164,12 @@ PWR_Status_t PWR_Initialize( PWR_t PWRx )
 
 PWR_Status_t PWR_Cycle( PWR_t PWRx )
 {
-    PWR_Status_t Status = PWR_Status_Error;
+    PWR_Status_t Status = PWR_Status_Success;
+    PWR_Status_t PWR_Status = PWR_Status_Success;
 
     do
     {
         PWR_Trace( "%s( PWRx=%d )", __FUNCTION__, PWRx );
-
-        if ( ( Status = PWR_IsValid( PWRx ) ) != PWR_Status_Success )
-        {
-            break;
-        }
 
         if ( ( Status = PWR_Context_Cycle( ) ) != PWR_Status_Success )
         {
@@ -186,8 +183,7 @@ PWR_Status_t PWR_Cycle( PWR_t PWRx )
                 continue;
             }
 
-            PWR_Status_t PWR_Status = PWR_Status_Success;
-            if ( ( PWR_Status = PWR_Instance_Cycle( PWR_x ) ) != PWR_Status_Success )
+            if ( ( PWR_Status = PWR_Port_Cycle( PWR_x ) ) != PWR_Status_Success )
             {
                 Status = PWR_Status;
             }
@@ -200,16 +196,12 @@ PWR_Status_t PWR_Cycle( PWR_t PWRx )
 
 PWR_Status_t PWR_DeInitialize( PWR_t PWRx )
 {
-    PWR_Status_t Status = PWR_Status_Error;
+    PWR_Status_t Status = PWR_Status_Success;
+    PWR_Status_t PWR_Status = PWR_Status_Success;
 
     do
     {
         PWR_Trace( "%s( PWRx=%d )", __FUNCTION__, PWRx );
-
-        if ( ( Status = PWR_IsValid( PWRx ) ) != PWR_Status_Success )
-        {
-            break;
-        }
 
         for ( PWR_t PWR_x = PWR_Null; PWR_x < PWR_Count; ++PWR_x )
         {
@@ -218,8 +210,7 @@ PWR_Status_t PWR_DeInitialize( PWR_t PWRx )
                 continue;
             }
 
-            PWR_Status_t PWR_Status = PWR_Status_Success;
-            if ( ( PWR_Status = PWR_Instance_DeInitialize( PWR_x ) ) != PWR_Status_Success )
+            if ( ( PWR_Status = PWR_Port_DeInitialize( PWR_x ) ) != PWR_Status_Success )
             {
                 Status = PWR_Status;
             }
@@ -232,11 +223,65 @@ PWR_Status_t PWR_DeInitialize( PWR_t PWRx )
     return Status;
 }
 
+PWR_Status_t PWR_SetOnEnter( PWR_t PWRx, PWR_OnEnter_t OnEnter )
+{
+    PWR_Status_t Status = PWR_Status_Success;
+    PWR_Status_t PWR_Status = PWR_Status_Success;
+
+    do
+    {
+        PWR_Trace( "%s( PWRx=%d, Callback=%p, Context=%p )", __FUNCTION__, PWRx, OnEnter.Callback, OnEnter.Context );
+
+        for ( PWR_t PWR_x = PWR_Null; PWR_x < PWR_Count; ++PWR_x )
+        {
+            if ( PWRx != PWR_All && PWRx != PWR_x )
+            {
+                continue;
+            }
+
+            if ( ( PWR_Status = PWR_Port_SetOnEnter( PWR_x, &OnEnter ) ) != PWR_Status_Success )
+            {
+                Status = PWR_Status;
+            }
+        }
+    }
+    while ( 0 );
+
+    return Status;
+}
+
+PWR_Status_t PWR_SetOnExit( PWR_t PWRx, PWR_OnExit_t OnExit )
+{
+    PWR_Status_t Status = PWR_Status_Success;
+    PWR_Status_t PWR_Status = PWR_Status_Success;
+
+    do
+    {
+        PWR_Trace( "%s( PWRx=%d, Callback=%p, Context=%p )", __FUNCTION__, PWRx, OnExit.Callback, OnExit.Context );
+
+        for ( PWR_t PWR_x = PWR_Null; PWR_x < PWR_Count; ++PWR_x )
+        {
+            if ( PWRx != PWR_All && PWRx != PWR_x )
+            {
+                continue;
+            }
+
+            if ( ( PWR_Status = PWR_Port_SetOnExit( PWR_x, &OnExit ) ) != PWR_Status_Success )
+            {
+                Status = PWR_Status;
+            }
+        }
+    }
+    while ( 0 );
+
+    return Status;
+}
+
 // #############################################################################
 // #### Public Variable(s) #####################################################
 // #############################################################################
 
-const char PWR_VERSION[] = "0.0.0.v20260518-0122";
+const char PWR_VERSION[] = "0.0.0.v20260526-1736";
 
 // #############################################################################
 // #### File Guard #############################################################
