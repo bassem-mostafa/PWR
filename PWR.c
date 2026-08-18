@@ -59,72 +59,17 @@
 // #### Private Type(s) ########################################################
 // #############################################################################
 
-typedef struct PWR_Context
-{
-} PWR_Context_t;
-
 // #############################################################################
 // #### Private Method(s) Prototype ############################################
 // #############################################################################
-
-static PWR_Status_t PWR_Context_Initialize( void );
-static PWR_Status_t PWR_Context_Cycle( void );
-static PWR_Status_t PWR_Context_DeInitialize( void );
 
 // #############################################################################
 // #### Private Variable(s) ####################################################
 // #############################################################################
 
-static PWR_Context_t PWR_Context;
-
 // #############################################################################
 // #### Private Method(s) ######################################################
 // #############################################################################
-
-static PWR_Status_t PWR_Context_Initialize( void )
-{
-    PWR_Status_t Status = PWR_Status_Success;
-
-    do
-    {
-        PWR_Trace( "%s( void )", __FUNCTION__ );
-
-        UTIL_UNUSED( PWR_Context );
-    }
-    while ( 0 );
-
-    return Status;
-}
-
-static PWR_Status_t PWR_Context_Cycle( void )
-{
-    PWR_Status_t Status = PWR_Status_Success;
-
-    do
-    {
-        PWR_Trace( "%s( void )", __FUNCTION__ );
-
-        UTIL_UNUSED( PWR_Context );
-    }
-    while ( 0 );
-
-    return Status;
-}
-
-static PWR_Status_t PWR_Context_DeInitialize( void )
-{
-    PWR_Status_t Status = PWR_Status_Success;
-
-    do
-    {
-        PWR_Trace( "%s( void )", __FUNCTION__ );
-
-        UTIL_UNUSED( PWR_Context );
-    }
-    while ( 0 );
-
-    return Status;
-}
 
 // #############################################################################
 // #### Public Method(s) #######################################################
@@ -138,11 +83,6 @@ PWR_Status_t PWR_Initialize( PWR_t PWRx )
     do
     {
         PWR_Trace( "%s( PWRx=%d )", __FUNCTION__, PWRx );
-
-        if ( ( Status = PWR_Context_Initialize( ) ) != PWR_Status_Success )
-        {
-            break;
-        }
 
         PWR_t PWR_start = ( PWRx == PWR_All ? PWR_Null : PWRx );
         PWR_t PWR_end = ( PWRx == PWR_All ? PWR_Count : PWRx + 1 );
@@ -167,11 +107,6 @@ PWR_Status_t PWR_Cycle( PWR_t PWRx )
     do
     {
         PWR_Trace( "%s( PWRx=%d )", __FUNCTION__, PWRx );
-
-        if ( ( Status = PWR_Context_Cycle( ) ) != PWR_Status_Success )
-        {
-            break;
-        }
 
         PWR_t PWR_start = ( PWRx == PWR_All ? PWR_Null : PWRx );
         PWR_t PWR_end = ( PWRx == PWR_All ? PWR_Count : PWRx + 1 );
@@ -205,11 +140,6 @@ PWR_Status_t PWR_DeInitialize( PWR_t PWRx )
             {
                 Status = PWR_Status;
             }
-        }
-
-        if ( ( Status = PWR_Context_DeInitialize( ) ) != PWR_Status_Success )
-        {
-            break;
         }
     }
     while ( 0 );
@@ -269,7 +199,7 @@ PWR_Status_t PWR_SetOnExit( PWR_t PWRx, PWR_OnExit_t OnExit )
 // #### Public Variable(s) #####################################################
 // #############################################################################
 
-const char PWR_VERSION[] = "0.0.0.v20260815-2008";
+const char PWR_VERSION[] = "0.0.0.v20260818-0345";
 
 // #############################################################################
 // #### File Guard #############################################################
